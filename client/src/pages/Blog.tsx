@@ -382,8 +382,8 @@ const Blog = () => {
                     href={post.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300 relative aspect-square group bg-white"
-                    whileHover={{ scale: 1.02, y: -5 }}
+                    className="block overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 relative aspect-square group bg-white"
+                    whileHover={{ scale: 1.03, y: -5 }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.3 }}
@@ -391,10 +391,10 @@ const Blog = () => {
                     <img 
                       src={post.image} 
                       alt={post.title}
-                      className="w-full h-[calc(100%-60px)] object-cover transition-transform duration-500 group-hover:scale-110"
+                      className="w-full h-[calc(100%-70px)] object-cover transition-transform duration-500 group-hover:scale-110"
                     />
-                    <div className="h-[60px] bg-white px-3 py-2 flex items-center border-t border-gray-100">
-                      <h3 className="text-gray-800 font-medium text-sm line-clamp-2 w-full">
+                    <div className="h-[70px] bg-white px-3 py-2 flex items-center border-t border-gray-100">
+                      <h3 className="text-gray-800 font-bold text-base line-clamp-2 w-full tracking-tight leading-tight bg-gradient-to-r from-emerald-600 to-sky-600 bg-clip-text text-transparent">
                         {post.title}
                       </h3>
                     </div>
