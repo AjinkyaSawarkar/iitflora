@@ -39,96 +39,113 @@ const processBloggerPosts = (posts: BloggerPost[]): SimplifiedBloggerPost[] => {
   });
 };
 
-// Custom slideshow component for the top of the page
-const BlogSlideshow = ({ posts }: { posts: SimplifiedBloggerPost[] }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+// Custom marquee component for horizontal scrolling posts
+const BlogMarquee = ({ posts }: { posts: SimplifiedBloggerPost[] }) => {
   const postsWithImages = posts.filter(post => post.image);
+  const scrollRef = useRef<HTMLDivElement>(null);
   
-  // Auto-advance the slideshow
+  // Auto-scroll the marquee
   useEffect(() => {
-    if (postsWithImages.length <= 1) return;
+    if (postsWithImages.length <= 3) return;
     
-    const interval = setInterval(() => {
-      setCurrentIndex(prevIndex => 
-        prevIndex === postsWithImages.length - 1 ? 0 : prevIndex + 1
-      );
-    }, 5000); // Change slide every 5 seconds
+    const scrollContainer = scrollRef.current;
+    if (!scrollContainer) return;
     
-    return () => clearInterval(interval);
+    let animationId: number;
+    let scrollAmount = 1;
+    const speed = 0.5; // Adjust speed as needed
+    
+    const scroll = () => {
+      if (scrollContainer) {
+        scrollContainer.scrollLeft += scrollAmount * speed;
+        
+        // Reset scroll position when reaching the end
+        if (scrollContainer.scrollLeft >= (scrollContainer.scrollWidth - scrollContainer.clientWidth - 100)) {
+          // Jump back to start with a small offset to avoid jumpy appearance
+          scrollContainer.scrollLeft = 10;
+        }
+      }
+      animationId = requestAnimationFrame(scroll);
+    };
+    
+    // Start the animation
+    animationId = requestAnimationFrame(scroll);
+    
+    // Add pause on hover functionality
+    const handleMouseEnter = () => {
+      cancelAnimationFrame(animationId);
+    };
+    
+    const handleMouseLeave = () => {
+      animationId = requestAnimationFrame(scroll);
+    };
+    
+    scrollContainer.addEventListener('mouseenter', handleMouseEnter);
+    scrollContainer.addEventListener('mouseleave', handleMouseLeave);
+    
+    return () => {
+      cancelAnimationFrame(animationId);
+      if (scrollContainer) {
+        scrollContainer.removeEventListener('mouseenter', handleMouseEnter);
+        scrollContainer.removeEventListener('mouseleave', handleMouseLeave);
+      }
+    };
   }, [postsWithImages.length]);
   
   if (postsWithImages.length === 0) return null;
   
-  const goToPrevious = () => {
-    setCurrentIndex(prevIndex => 
-      prevIndex === 0 ? postsWithImages.length - 1 : prevIndex - 1
-    );
-  };
-  
-  const goToNext = () => {
-    setCurrentIndex(prevIndex => 
-      prevIndex === postsWithImages.length - 1 ? 0 : prevIndex + 1
-    );
-  };
-  
   return (
-    <div className="relative h-[60vh] md:h-[70vh] overflow-hidden rounded-xl shadow-xl">
-      {postsWithImages.map((post, index) => (
-        <motion.div 
-          key={post.id}
-          className="absolute inset-0 w-full h-full"
-          initial={{ opacity: 0 }}
-          animate={{ 
-            opacity: index === currentIndex ? 1 : 0,
-            scale: index === currentIndex ? 1 : 1.1
-          }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-        >
-          <div 
-            className="w-full h-full bg-cover bg-center"
-            style={{ backgroundImage: `url(${post.image})` }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-          
-          <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-            <h2 className="font-display text-3xl md:text-5xl font-bold">{post.title}</h2>
-          </div>
-        </motion.div>
-      ))}
+    <div className="relative overflow-hidden rounded-xl shadow-xl">
+      {/* Horizontal scrolling container */}
+      <div 
+        ref={scrollRef}
+        className="flex overflow-x-auto scrollbar-hide py-2"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        {/* Double the posts to create a seamless loop effect */}
+        {[...postsWithImages, ...postsWithImages].map((post, index) => (
+          <motion.a
+            key={`${post.id}-${index}`}
+            href={post.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative flex-shrink-0 mx-2 rounded-lg overflow-hidden shadow-lg group transition-all duration-300 hover:shadow-xl"
+            style={{ width: '280px', height: '400px' }}
+            whileHover={{ y: -5 }}
+          >
+            <div 
+              className="w-full h-full bg-cover bg-center"
+              style={{ backgroundImage: `url(${post.image})` }}
+            />
+            {/* Always visible overlay with post title */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end">
+              <div className="p-4 text-white">
+                <h2 className="font-display text-xl font-bold transition-all duration-300 group-hover:scale-105 line-clamp-2">
+                  {post.title}
+                </h2>
+                {post.labels && post.labels.length > 0 && (
+                  <div className="flex flex-wrap gap-1 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    {post.labels.slice(0, 2).map(label => (
+                      <span key={label} className="text-xs bg-primary/80 px-2 py-1 rounded-full">
+                        {label}
+                      </span>
+                    ))}
+                    {post.labels.length > 2 && (
+                      <span className="text-xs bg-primary/80 px-2 py-1 rounded-full">
+                        +{post.labels.length - 2}
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          </motion.a>
+        ))}
+      </div>
       
-      {postsWithImages.length > 1 && (
-        <>
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white rounded-full"
-            onClick={goToPrevious}
-          >
-            <ChevronLeft className="h-8 w-8" />
-          </Button>
-          
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white rounded-full"
-            onClick={goToNext}
-          >
-            <ChevronRight className="h-8 w-8" />
-          </Button>
-          
-          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-            {postsWithImages.map((_, index) => (
-              <button
-                key={index}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                  index === currentIndex ? 'bg-white scale-125' : 'bg-white/50'
-                }`}
-                onClick={() => setCurrentIndex(index)}
-              />
-            ))}
-          </div>
-        </>
-      )}
+      {/* Gradient edges to indicate scrolling */}
+      <div className="pointer-events-none absolute left-0 top-0 h-full w-16 bg-gradient-to-r from-neutral-50 to-transparent z-10"></div>
+      <div className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-neutral-50 to-transparent z-10"></div>
     </div>
   );
 };
@@ -198,9 +215,9 @@ const Blog = () => {
     <div className="min-h-screen bg-neutral-50 pb-16">
       {/* Main Content */}
       <div className="w-full max-w-[1600px] mx-auto px-4 py-4">
-        {/* Slideshow */}
+        {/* Horizontal Marquee */}
         {isLoading ? (
-          <div className="h-[60vh] md:h-[70vh] bg-gray-200 animate-pulse rounded-xl shadow-xl"></div>
+          <div className="h-[400px] bg-gray-200 animate-pulse rounded-xl shadow-xl"></div>
         ) : error ? (
           <div className="bg-red-100 text-red-700 p-6 rounded-xl shadow-xl">
             <h2 className="text-xl font-bold">Error loading blog posts</h2>
@@ -211,9 +228,10 @@ const Blog = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
-            className="shadow-xl mb-8"
+            className="relative shadow-xl mb-8"
           >
-            <BlogSlideshow posts={blogPosts} />
+            <h2 className="text-2xl font-bold mb-4">Featured Posts</h2>
+            <BlogMarquee posts={blogPosts} />
           </motion.div>
         )}
         
