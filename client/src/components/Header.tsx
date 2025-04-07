@@ -37,15 +37,23 @@ const Header = () => {
           </svg>
           <Link href="/">
             <h1 className="font-display text-2xl md:text-3xl font-bold text-neutral-800 cursor-pointer">
-              Campus Tree Explorer
+              Campus Tree Blog
             </h1>
           </Link>
         </div>
         
         <div className="flex items-center space-x-4 mb-4 md:mb-0 md:order-3">
-          <Link href="/blog" className="flex items-center text-primary hover:text-primary/80 font-medium transition-colors">
-            <Rss className="h-5 w-5 mr-1" />
-            <span>Blog</span>
+          <Link href="/trees" className="flex items-center text-primary hover:text-primary/80 font-medium transition-colors">
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              className="w-5 h-5 mr-1"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+            </svg>
+            <span>Tree Gallery</span>
           </Link>
         </div>
         

@@ -15,9 +15,9 @@ function Router() {
       <Header />
       <main className="flex-grow">
         <Switch>
-          <Route path="/" component={Home} />
+          <Route path="/" component={Blog} />
+          <Route path="/trees" component={Home} />
           <Route path="/tree/:id" component={TreeDetails} />
-          <Route path="/blog" component={Blog} />
           <Route component={NotFound} />
         </Switch>
       </main>
