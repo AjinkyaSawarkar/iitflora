@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'wouter';
+import { useLocation } from 'wouter';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Tree } from '@shared/schema';
 import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { ChevronRight } from 'lucide-react';
 
 interface TreeGalleryProps {
   trees: Tree[];
@@ -13,6 +11,7 @@ interface TreeGalleryProps {
 
 const TreeGallery = ({ trees, activeFilter }: TreeGalleryProps) => {
   const [filteredTrees, setFilteredTrees] = useState<Tree[]>([]);
+  const [_, setLocation] = useLocation();
   
   useEffect(() => {
     if (activeFilter === 'all') {
@@ -21,6 +20,10 @@ const TreeGallery = ({ trees, activeFilter }: TreeGalleryProps) => {
       setFilteredTrees(trees.filter(tree => tree.categories.includes(activeFilter)));
     }
   }, [trees, activeFilter]);
+  
+  const handleCardClick = (treeId: number) => {
+    setLocation(`/tree/${treeId}`);
+  };
   
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -34,7 +37,10 @@ const TreeGallery = ({ trees, activeFilter }: TreeGalleryProps) => {
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.3 }}
           >
-            <Card className="overflow-hidden h-full bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <Card 
+              className="overflow-hidden h-full bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer hover:scale-[1.02] transform"
+              onClick={() => handleCardClick(tree.id)}
+            >
               <div className="relative h-64 overflow-hidden">
                 <img 
                   src={tree.image} 
@@ -45,7 +51,7 @@ const TreeGallery = ({ trees, activeFilter }: TreeGalleryProps) => {
               <CardContent className="p-4">
                 <h3 className="font-display text-xl font-bold">{tree.name}</h3>
                 <p className="text-sm text-gray-600 italic mb-2">{tree.scientificName}</p>
-                <div className="flex flex-wrap gap-1 mb-3">
+                <div className="flex flex-wrap gap-1">
                   {tree.categories.map((category, index) => (
                     <span 
                       key={index}
@@ -55,15 +61,6 @@ const TreeGallery = ({ trees, activeFilter }: TreeGalleryProps) => {
                     </span>
                   ))}
                 </div>
-                <Link href={`/tree/${tree.id}`}>
-                  <Button 
-                    variant="link" 
-                    className="text-primary hover:text-accent transition flex items-center mt-2 p-0"
-                  >
-                    <span className="mr-2">View details</span>
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
-                </Link>
               </CardContent>
             </Card>
           </motion.div>
