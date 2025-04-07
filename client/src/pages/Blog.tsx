@@ -277,7 +277,7 @@ const Blog = () => {
       }}
     >
       {[...Array(12)].map((_, i) => (
-        <div key={i} className="bg-gray-200 rounded-md aspect-square animate-pulse"></div>
+        <div key={i} className="bg-gray-200 rounded-xl aspect-square animate-pulse border-4 border-gray-100"></div>
       ))}
     </div>
   );
@@ -382,7 +382,7 @@ const Blog = () => {
                     href={post.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 relative aspect-square group bg-white"
+                    className="block overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 relative aspect-square group bg-white border-4 border-emerald-100 hover:border-emerald-300"
                     whileHover={{ scale: 1.03, y: -5 }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
