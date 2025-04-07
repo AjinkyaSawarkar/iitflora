@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import { Tree } from '@shared/schema';
-import { Search } from 'lucide-react';
+import { Search, Rss } from 'lucide-react';
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -41,7 +41,15 @@ const Header = () => {
             </h1>
           </Link>
         </div>
-        <div className="relative w-full md:w-64">
+        
+        <div className="flex items-center space-x-4 mb-4 md:mb-0 md:order-3">
+          <Link href="/blog" className="flex items-center text-primary hover:text-primary/80 font-medium transition-colors">
+            <Rss className="h-5 w-5 mr-1" />
+            <span>Blog</span>
+          </Link>
+        </div>
+        
+        <div className="relative w-full md:w-64 md:order-2">
           <form onSubmit={handleSearch} className="relative">
             <Input
               type="text"
@@ -65,11 +73,9 @@ const Header = () => {
           {showResults && searchResults && searchResults.length > 0 && (
             <div className="absolute top-full mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg z-50 max-h-64 overflow-auto">
               {searchResults.map((tree) => (
-                <Link key={tree.id} href={`/tree/${tree.id}`}>
-                  <a className="block p-2 hover:bg-gray-100 cursor-pointer">
-                    <div className="font-medium">{tree.name}</div>
-                    <div className="text-sm text-gray-500">{tree.scientificName}</div>
-                  </a>
+                <Link key={tree.id} href={`/tree/${tree.id}`} className="block p-2 hover:bg-gray-100 cursor-pointer">
+                  <div className="font-medium">{tree.name}</div>
+                  <div className="text-sm text-gray-500">{tree.scientificName}</div>
                 </Link>
               ))}
             </div>

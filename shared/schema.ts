@@ -18,3 +18,57 @@ export const insertTreeSchema = createInsertSchema(trees).omit({
 
 export type InsertTree = z.infer<typeof insertTreeSchema>;
 export type Tree = typeof trees.$inferSelect;
+
+// Blogger API types
+export interface BloggerAuthor {
+  id: string;
+  displayName: string;
+  url: string;
+  image?: {
+    url: string;
+  };
+}
+
+export interface BloggerImage {
+  url: string;
+}
+
+export interface BloggerPost {
+  kind: string;
+  id: string;
+  blog: {
+    id: string;
+  };
+  published: string;
+  updated: string;
+  url: string;
+  selfLink: string;
+  title: string;
+  content: string;
+  author: BloggerAuthor;
+  replies: {
+    totalItems: string;
+    selfLink: string;
+  };
+  images?: BloggerImage[];
+  labels?: string[];
+}
+
+export interface BloggerResponse {
+  kind: string;
+  items: BloggerPost[];
+  etag: string;
+}
+
+// Simplified blogger post type for our application
+export interface SimplifiedBloggerPost {
+  id: string;
+  title: string;
+  content: string;
+  published: string;
+  url: string;
+  author: string;
+  authorImage?: string;
+  image?: string;
+  labels?: string[];
+}
