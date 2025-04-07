@@ -391,10 +391,10 @@ const Blog = () => {
                     <img 
                       src={post.image} 
                       alt={post.title}
-                      className="w-full h-[calc(100%-70px)] object-cover transition-transform duration-500 group-hover:scale-110"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
-                    <div className="h-[70px] bg-white px-3 py-2 flex items-center border-t border-gray-100">
-                      <h3 className="text-gray-800 font-bold text-base line-clamp-2 w-full tracking-tight leading-tight bg-gradient-to-r from-emerald-600 to-sky-600 bg-clip-text text-transparent">
+                    <div className="absolute bottom-0 left-0 right-0 bg-white/60 backdrop-blur-sm px-4 py-3">
+                      <h3 className="text-gray-800 font-semibold text-base line-clamp-2 w-full tracking-wide leading-tight font-serif italic">
                         {post.title}
                       </h3>
                     </div>
