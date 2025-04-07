@@ -270,8 +270,13 @@ const Blog = () => {
   
   // Loading skeleton for the gallery
   const GallerySkeleton = () => (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {[...Array(8)].map((_, i) => (
+    <div 
+      className="grid gap-4 auto-rows-fr"
+      style={{ 
+        gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))"
+      }}
+    >
+      {[...Array(12)].map((_, i) => (
         <div key={i} className="bg-gray-200 rounded-md aspect-square animate-pulse"></div>
       ))}
     </div>
@@ -366,7 +371,10 @@ const Blog = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.5 }}
-                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+                className="grid gap-4 auto-rows-fr"
+                style={{ 
+                  gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))"
+                }}
               >
                 {filteredPosts.filter(post => post.image).map((post) => (
                   <motion.a
