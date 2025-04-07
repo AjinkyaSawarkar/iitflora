@@ -238,19 +238,21 @@ const Blog = () => {
         {/* Filter Bar */}
         {blogPosts.length > 0 && (
           <motion.div 
-            className="bg-white p-4 rounded-lg shadow-md mb-8 overflow-x-auto sticky top-20 z-10"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
+            className="border-b border-gray-200 py-4 mb-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <div className="flex items-center space-x-2">
-              <TagIcon className="h-5 w-5 text-emerald-600 mr-1 flex-shrink-0" />
-              <div className="font-medium whitespace-nowrap">Filter by tag:</div>
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="flex items-center">
+                <TagIcon className="h-5 w-5 text-emerald-600 mr-2" />
+                <div className="font-medium text-lg">Filter by tag:</div>
+              </div>
               
               <div className="flex gap-2 flex-wrap">
                 <Badge 
                   variant={activeFilter === 'all' ? 'default' : 'outline'}
-                  className="cursor-pointer transition-all duration-300 hover:scale-105"
+                  className="cursor-pointer transition-all duration-200 hover:scale-105"
                   onClick={() => handleFilterChange('all')}
                 >
                   All Posts
@@ -260,7 +262,7 @@ const Blog = () => {
                   <Badge 
                     key={tag}
                     variant={activeFilter === tag ? 'default' : 'outline'}
-                    className="cursor-pointer transition-all duration-300 hover:scale-105"
+                    className="cursor-pointer transition-all duration-200 hover:scale-105"
                     onClick={() => handleFilterChange(tag)}
                   >
                     {tag}
