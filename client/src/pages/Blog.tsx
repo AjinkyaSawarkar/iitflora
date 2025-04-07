@@ -39,7 +39,7 @@ const processBloggerPosts = (posts: BloggerPost[]): SimplifiedBloggerPost[] => {
   });
 };
 
-// Custom marquee component for horizontal scrolling posts
+// Custom marquee component for horizontal scrolling posts with modern design
 const BlogMarquee = ({ posts }: { posts: SimplifiedBloggerPost[] }) => {
   const postsWithImages = posts.filter(post => post.image);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -95,11 +95,26 @@ const BlogMarquee = ({ posts }: { posts: SimplifiedBloggerPost[] }) => {
   if (postsWithImages.length === 0) return null;
   
   return (
-    <div className="relative overflow-hidden rounded-xl shadow-xl">
+    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-50 to-emerald-100 p-6 pb-8">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold bg-gradient-to-r from-emerald-700 to-emerald-500 bg-clip-text text-transparent">
+          Featured Posts
+        </h2>
+        
+        <div className="flex items-center space-x-2 text-sm text-emerald-600">
+          <div className="text-emerald-600 opacity-70">Hover to pause</div>
+          <div className="flex space-x-1">
+            {[1, 2, 3].map(dot => (
+              <span key={dot} className="block w-1 h-1 rounded-full bg-emerald-600"></span>
+            ))}
+          </div>
+        </div>
+      </div>
+      
       {/* Horizontal scrolling container */}
       <div 
         ref={scrollRef}
-        className="flex overflow-x-auto scrollbar-hide py-2"
+        className="flex overflow-x-auto scrollbar-hide gap-5 pb-4"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {/* Double the posts to create a seamless loop effect */}
@@ -109,43 +124,94 @@ const BlogMarquee = ({ posts }: { posts: SimplifiedBloggerPost[] }) => {
             href={post.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="relative flex-shrink-0 mx-2 rounded-lg overflow-hidden shadow-lg group transition-all duration-300 hover:shadow-xl"
-            style={{ width: '280px', height: '400px' }}
-            whileHover={{ y: -5 }}
+            className="relative flex-shrink-0 rounded-xl overflow-hidden group"
+            style={{ width: '300px', height: '380px' }}
+            initial={{ opacity: 0.9, scale: 0.98 }}
+            whileHover={{ 
+              y: -8,
+              scale: 1,
+              opacity: 1,
+              boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
+            }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
           >
             <div 
-              className="w-full h-full bg-cover bg-center"
+              className="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
               style={{ backgroundImage: `url(${post.image})` }}
             />
-            {/* Always visible overlay with post title */}
+            
+            {/* Modern glass effect overlay with post title */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end">
-              <div className="p-4 text-white">
-                <h2 className="font-display text-xl font-bold transition-all duration-300 group-hover:scale-105 line-clamp-2">
-                  {post.title}
-                </h2>
+              <div className="p-5">
+                {/* Tag marker at top */}
                 {post.labels && post.labels.length > 0 && (
-                  <div className="flex flex-wrap gap-1 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    {post.labels.slice(0, 2).map(label => (
-                      <span key={label} className="text-xs bg-primary/80 px-2 py-1 rounded-full">
-                        {label}
-                      </span>
-                    ))}
-                    {post.labels.length > 2 && (
-                      <span className="text-xs bg-primary/80 px-2 py-1 rounded-full">
-                        +{post.labels.length - 2}
-                      </span>
-                    )}
+                  <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-white text-xs font-medium">
+                    {post.labels[0]}
                   </div>
                 )}
+                
+                {/* Title with modern style */}
+                <div className="backdrop-blur-sm bg-white/10 rounded-lg p-4 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                  <h2 className="font-display text-white text-xl font-bold line-clamp-2 mb-2">
+                    {post.title}
+                  </h2>
+                  
+                  {/* Tags with modern style, only visible on hover */}
+                  {post.labels && post.labels.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mt-2 h-0 opacity-0 group-hover:h-auto group-hover:opacity-100 transition-all duration-500 overflow-hidden">
+                      {post.labels.map(label => (
+                        <span key={label} className="text-xs bg-white/20 backdrop-blur-md px-2 py-1 rounded-full text-white">
+                          {label}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  
+                  {/* View button, visible on hover */}
+                  <div className="mt-3 h-0 opacity-0 group-hover:h-auto group-hover:opacity-100 transition-all duration-300 overflow-hidden">
+                    <div className="text-emerald-300 text-sm flex items-center">
+                      View post
+                      <svg className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </motion.a>
         ))}
       </div>
       
-      {/* Gradient edges to indicate scrolling */}
-      <div className="pointer-events-none absolute left-0 top-0 h-full w-16 bg-gradient-to-r from-neutral-50 to-transparent z-10"></div>
-      <div className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-neutral-50 to-transparent z-10"></div>
+      {/* Modern gradient edges for scrolling indicators */}
+      <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-emerald-50 to-transparent z-10"></div>
+      <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-emerald-50 to-transparent z-10"></div>
+      
+      {/* Subtle scroll indicator arrows */}
+      <div 
+        className="hidden md:flex absolute left-2 top-1/2 transform -translate-y-1/2 text-emerald-600/50 hover:text-emerald-600 bg-white/70 backdrop-blur-sm rounded-full p-1 cursor-pointer z-20 transition-all duration-300 hover:bg-white/90"
+        onClick={() => {
+          if (scrollRef.current) {
+            scrollRef.current.scrollLeft -= 350; // Scroll by approximately one card width
+          }
+        }}
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+      </div>
+      <div 
+        className="hidden md:flex absolute right-2 top-1/2 transform -translate-y-1/2 text-emerald-600/50 hover:text-emerald-600 bg-white/70 backdrop-blur-sm rounded-full p-1 cursor-pointer z-20 transition-all duration-300 hover:bg-white/90"
+        onClick={() => {
+          if (scrollRef.current) {
+            scrollRef.current.scrollLeft += 350; // Scroll by approximately one card width
+          }
+        }}
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </div>
     </div>
   );
 };
@@ -217,7 +283,7 @@ const Blog = () => {
       <div className="w-full max-w-[1600px] mx-auto px-4 py-4">
         {/* Horizontal Marquee */}
         {isLoading ? (
-          <div className="h-[400px] bg-gray-200 animate-pulse rounded-xl shadow-xl"></div>
+          <div className="h-[400px] bg-gray-200 animate-pulse rounded-2xl shadow-xl"></div>
         ) : error ? (
           <div className="bg-red-100 text-red-700 p-6 rounded-xl shadow-xl">
             <h2 className="text-xl font-bold">Error loading blog posts</h2>
@@ -228,9 +294,8 @@ const Blog = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
-            className="relative shadow-xl mb-8"
+            className="relative mb-8"
           >
-            <h2 className="text-2xl font-bold mb-4">Featured Posts</h2>
             <BlogMarquee posts={blogPosts} />
           </motion.div>
         )}
