@@ -277,18 +277,18 @@ const Blog = () => {
       }}
     >
       {[...Array(12)].map((_, i) => (
-        <div key={i} className="bg-emerald-50 rounded-xl aspect-square animate-pulse border-4 border-white shadow-md"></div>
+        <div key={i} className="bg-gray-200 rounded-md aspect-square animate-pulse"></div>
       ))}
     </div>
   );
   
   return (
-    <div className="min-h-screen bg-emerald-900/5 pb-16">
+    <div className="min-h-screen bg-neutral-50 pb-16">
       {/* Main Content */}
       <div className="w-full max-w-[1600px] mx-auto px-4 py-4">
         {/* Horizontal Marquee */}
         {isLoading ? (
-          <div className="h-[400px] bg-emerald-50 animate-pulse rounded-2xl shadow-xl border-4 border-white"></div>
+          <div className="h-[400px] bg-gray-200 animate-pulse rounded-2xl shadow-xl"></div>
         ) : error ? (
           <div className="bg-red-100 text-red-700 p-6 rounded-xl shadow-xl">
             <h2 className="text-xl font-bold">Error loading blog posts</h2>
@@ -382,7 +382,7 @@ const Blog = () => {
                     href={post.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 relative aspect-square group bg-emerald-50 border-4 border-white"
+                    className="block overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 relative aspect-square group bg-white"
                     whileHover={{ scale: 1.03, y: -5 }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
