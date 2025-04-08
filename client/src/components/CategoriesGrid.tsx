@@ -7,7 +7,7 @@ export const plantCategories = [
     id: "avenue-trees",
     title: "Avenue Trees",
     description: "Trees suitable for lining streets and avenues",
-    image: "Images/avenue-tree.jpg",
+    image: "/Images/avenue-tree.jpg",
     tag: "avenue", // Simple keyword for matching
   },
   {
