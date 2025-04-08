@@ -6,6 +6,8 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import TreeDetails from "@/pages/TreeDetails";
 import Blog from "@/pages/Blog";
+import Categories from "@/pages/Categories";
+import CategoryDetail from "@/pages/CategoryDetail";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -15,7 +17,9 @@ function Router() {
       <Header />
       <main className="flex-grow">
         <Switch>
-          <Route path="/" component={Blog} />
+          <Route path="/" component={Categories} />
+          <Route path="/blog" component={Blog} />
+          <Route path="/category/:id" component={CategoryDetail} />
           <Route path="/trees" component={Home} />
           <Route path="/tree/:id" component={TreeDetails} />
           <Route component={NotFound} />

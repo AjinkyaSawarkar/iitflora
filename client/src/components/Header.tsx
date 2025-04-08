@@ -43,7 +43,33 @@ const Header = () => {
         </div>
         
         <div className="flex items-center space-x-4 mb-4 md:mb-0 md:order-3">
-          <Link href="/trees" className="flex items-center text-primary hover:text-primary/80 font-medium transition-colors">
+          <Link href="/" className="flex items-center text-neutral-800 hover:text-primary font-medium transition-colors">
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              className="w-5 h-5 mr-1"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+            </svg>
+            <span>Categories</span>
+          </Link>
+          
+          <Link href="/blog" className="flex items-center text-neutral-800 hover:text-primary font-medium transition-colors">
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              className="w-5 h-5 mr-1"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span>All Plants</span>
+          </Link>
+          
+          <Link href="/trees" className="flex items-center text-neutral-800 hover:text-primary font-medium transition-colors">
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
               viewBox="0 0 24 24" 
@@ -53,7 +79,7 @@ const Header = () => {
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
             </svg>
-            <span>Tree Gallery</span>
+            <span>Tree Database</span>
           </Link>
         </div>
         
