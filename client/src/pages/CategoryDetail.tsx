@@ -234,41 +234,25 @@ const CategoryDetail = () => {
                 >
                   {categoryPosts.filter(post => post.image).map((post, index) => {
                     return (
-                      <div key={post.id} className="relative">
-                        <input type="checkbox" id={`image-${post.id}`} className="hidden" />
-                        <label 
-                          htmlFor={`image-${post.id}`}
-                          className="block overflow-hidden shadow-sm hover:shadow transition-all duration-300 relative bg-white aspect-[4/3] transform-style-preserve-3d cursor-pointer"
-                        >
-                          <div className="cell w-full h-full">
-                            <div className="absolute inset-0 backface-hidden">
-                              <img 
-                                src={post.image} 
-                                alt={post.title}
-                                className="w-full h-full object-cover"
-                              />
-                            </div>
-                            <div className="absolute inset-0 rotate-y-180 backface-hidden">
-                              <img 
-                                src={post.images?.[1] || post.image} 
-                                alt={post.title}
-                                className="w-full h-full object-cover"
-                              />
-                            </div>
-                          </div>
-                          <div className="absolute bottom-0 left-0 bg-white/80 text-xs py-1 px-2 text-gray-500 z-10">
-                            {post.title}
-                          </div>
-                        </label>
-                        <a 
-                          href={post.url}
-                          target="_blank"
-                          rel="noopener noreferrer" 
-                          className="absolute top-2 right-2 bg-white/80 rounded-full p-2 z-20"
-                        >
-                          <span className="text-xs">View Details</span>
-                        </a>
-                      </div>
+                      <motion.a
+                        key={post.id}
+                        href={post.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block overflow-hidden shadow-sm hover:shadow transition-all duration-300 relative bg-white aspect-[4/3]"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <img 
+                          src={post.image} 
+                          alt={post.title}
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute bottom-0 left-0 bg-white/80 text-xs py-1 px-2 text-gray-500">
+                          {post.title}
+                        </div>
+                      </motion.a>
                     );
                   })}
                 </motion.div>
