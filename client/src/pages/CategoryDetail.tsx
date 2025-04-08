@@ -239,7 +239,7 @@ const CategoryDetail = () => {
                         href={post.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="block overflow-hidden shadow-sm hover:shadow transition-all duration-300 relative bg-white"
+                        className="block overflow-hidden shadow-sm hover:shadow transition-all duration-300 relative bg-white aspect-[4/3]"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.3 }}
@@ -247,7 +247,7 @@ const CategoryDetail = () => {
                         <img 
                           src={post.image} 
                           alt={post.title}
-                          className="w-full h-auto object-cover"
+                          className="w-full h-full object-cover"
                         />
                         <div className="absolute bottom-0 left-0 bg-white/80 text-xs py-1 px-2 text-gray-500">
                           {post.title}
