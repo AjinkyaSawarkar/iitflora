@@ -36,13 +36,39 @@ const CategoryDetail = () => {
     }
   });
 
-  // Filter posts based on category tag
+  // Log all available labels for debugging
+  useEffect(() => {
+    if (Array.isArray(blogPosts) && blogPosts.length > 0) {
+      const allLabels = new Set<string>();
+      
+      blogPosts.forEach(post => {
+        if (post.labels && post.labels.length > 0) {
+          post.labels.forEach(label => allLabels.add(label));
+        }
+      });
+      
+      console.log("All available labels:", Array.from(allLabels));
+      console.log("Looking for category tag:", category.tag);
+    }
+  }, [blogPosts, category]);
+
+  // Filter posts based on category tag (make it more flexible)
   const categoryPosts = Array.isArray(blogPosts) 
     ? blogPosts.filter(post => {
-        // Check if the post has tags/labels that match our category tag
-        return post.labels?.some(label => 
-          label.toLowerCase().includes(category.tag.toLowerCase())
-        );
+        // If post has no labels or image, filter it out
+        if (!post.labels || !post.image) return false;
+        
+        // Try to find a matching label with more flexible matching
+        return post.labels.some(label => {
+          // Case insensitive matching
+          const labelLower = label.toLowerCase();
+          const categoryTagLower = category.tag.toLowerCase();
+          
+          // Check for exact match, includes match, or words match
+          return labelLower === categoryTagLower || 
+                 labelLower.includes(categoryTagLower) || 
+                 categoryTagLower.includes(labelLower);
+        });
       })
     : [];
 
@@ -122,9 +148,48 @@ const CategoryDetail = () => {
             {categoryPosts.filter(post => post.image).length === 0 ? (
               <div className="text-center py-10">
                 <p className="text-gray-500 text-lg">No plants found in this category yet.</p>
+                <div className="mt-4 mb-4 text-left mx-auto max-w-md p-4 bg-white rounded-md shadow-sm">
+                  <h3 className="text-sm font-medium text-gray-800 mb-2">Debug Information:</h3>
+                  <p className="text-xs text-gray-600 mb-1">Category tag: {category.tag}</p>
+                  <p className="text-xs text-gray-600 mb-1">Total posts: {Array.isArray(blogPosts) ? blogPosts.length : 0}</p>
+                  <p className="text-xs text-gray-600 mb-1">Posts with images: {Array.isArray(blogPosts) ? blogPosts.filter(p => p.image).length : 0}</p>
+                  <p className="text-xs text-gray-600 mb-3">Posts with labels: {Array.isArray(blogPosts) ? blogPosts.filter(p => p.labels && p.labels.length > 0).length : 0}</p>
+                  
+                  <h4 className="text-xs font-medium text-gray-700 mb-1">All available labels:</h4>
+                  <div className="max-h-32 overflow-y-auto text-xs bg-gray-50 p-2 rounded">
+                    {Array.isArray(blogPosts) && blogPosts.length > 0 ? (
+                      (() => {
+                        // Collect labels using an array instead of a Set
+                        const allLabelsArray: string[] = [];
+                        const labelSet = new Set<string>();
+                        
+                        blogPosts.forEach(post => {
+                          if (post.labels && post.labels.length > 0) {
+                            post.labels.forEach(label => {
+                              if (!labelSet.has(label)) {
+                                labelSet.add(label);
+                                allLabelsArray.push(label);
+                              }
+                            });
+                          }
+                        });
+                        
+                        return allLabelsArray.map(label => (
+                          <div key={label} className="mb-1">
+                            - {label} {category.tag.toLowerCase() === label.toLowerCase() ? '(exact match)' : 
+                              (category.tag.toLowerCase().includes(label.toLowerCase()) || 
+                               label.toLowerCase().includes(category.tag.toLowerCase())) ? '(partial match)' : ''}
+                          </div>
+                        ));
+                      })()
+                    ) : (
+                      <div>No labels found</div>
+                    )}
+                  </div>
+                </div>
                 <Button 
                   onClick={() => navigate("/")} 
-                  className="mt-4 transition-all duration-300 hover:scale-105"
+                  className="transition-all"
                 >
                   Back to Categories
                 </Button>
