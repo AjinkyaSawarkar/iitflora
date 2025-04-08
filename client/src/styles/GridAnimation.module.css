@@ -1,0 +1,55 @@
+
+.grid {
+  --size: 100%;
+  display: grid;
+  width: var(--size);
+  aspect-ratio: 4/3;
+  grid-template-columns: repeat(var(--n), 1fr);
+  cursor: pointer;
+  position: relative;
+}
+
+.cell {
+  --abs-i: max(var(--ki,0) - var(--i),var(--i) - var(--ki,0));
+  --abs-j: max(var(--kj,0) - var(--j),var(--j) - var(--kj,0));
+  --rel-i: calc(var(--abs-i)/var(--n));
+  --rel-j: calc(var(--abs-j)/var(--n));
+  --sum: calc(var(--rel-i)*var(--rel-i) + var(--rel-j)*var(--rel-j));
+  --sqr: var(--sum);
+  display: grid;
+  transform-style: preserve-3d;
+  animation: m1 .4s calc(var(--sqr)*.6s) both;
+}
+
+.cell:before,
+.cell:after {
+  content: "";
+  grid-area: 1/1;
+  background: var(--img1) calc(var(--i)/var(--n)*100%) calc(var(--j)/var(--n)*100%)/var(--size) var(--size);
+  backface-visibility: hidden;
+}
+
+.cell:after {
+  background-image: var(--img2);
+  transform: rotateY(180deg);
+}
+
+.cell.flipped {
+  animation-name: m2;
+}
+
+@keyframes m1 {
+  0% {transform: perspective(300px) scale(1.05) rotateY(0deg)}
+  to {transform: perspective(300px) scale(1.05) rotateY(180deg)}
+}
+
+@keyframes m2 {
+  0% {transform: perspective(300px) scale(1.05) rotateY(180deg)}
+  to {transform: perspective(300px) scale(1.05) rotateY(0deg)}
+}
+
+@supports (z-index: sqrt(4)) {
+  .cell {
+    --sqr: sqrt(var(--sum));
+  }
+}
