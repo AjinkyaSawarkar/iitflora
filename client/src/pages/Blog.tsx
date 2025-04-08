@@ -268,24 +268,26 @@ const Blog = () => {
     setActiveFilter(filter);
   }, []);
   
-  // Loading skeleton for the gallery
+  // Loading skeleton for the gallery with masonry layout
   const GallerySkeleton = () => (
     <div 
-      className="grid gap-4 auto-rows-fr"
-      style={{ 
-        gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))"
-      }}
+      className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4"
     >
-      {[...Array(12)].map((_, i) => (
-        <div key={i} className="bg-gray-200 rounded-md aspect-square animate-pulse"></div>
-      ))}
+      {[...Array(16)].map((_, i) => {
+        // Variable heights for skeleton items
+        const aspectRatio = i % 3 === 0 ? 'aspect-[3/4]' : 
+                           i % 3 === 1 ? 'aspect-square' : 'aspect-[4/3]';
+        return (
+          <div key={i} className={`bg-gray-200 rounded-md ${aspectRatio} mb-4 animate-pulse`}></div>
+        );
+      })}
     </div>
   );
   
   return (
-    <div className="min-h-screen bg-neutral-50 pb-16">
+    <div className="min-h-screen bg-white pb-16">
       {/* Main Content */}
-      <div className="w-full max-w-[1600px] mx-auto px-4 py-4">
+      <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 py-4">
         {/* Horizontal Marquee */}
         {isLoading ? (
           <div className="h-[400px] bg-gray-200 animate-pulse rounded-2xl shadow-xl"></div>
@@ -308,58 +310,62 @@ const Blog = () => {
         {/* Filter Bar */}
         {blogPosts.length > 0 && (
           <motion.div 
-            className="border-b border-gray-200 py-4 mb-8"
+            className="py-4 mb-10"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <div className="flex flex-wrap items-center gap-3">
-              <div className="flex items-center">
-                <TagIcon className="h-5 w-5 text-emerald-600 mr-2" />
-                <div className="font-medium text-lg">Filter by tag:</div>
-              </div>
+            <div className="flex items-center justify-center gap-2 flex-wrap">
+              <button
+                onClick={() => handleFilterChange('all')}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                  activeFilter === 'all' 
+                    ? 'bg-black text-white' 
+                    : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                }`}
+              >
+                All
+              </button>
               
-              <div className="flex gap-2 flex-wrap">
-                <Badge 
-                  variant={activeFilter === 'all' ? 'default' : 'outline'}
-                  className="cursor-pointer transition-all duration-200 hover:scale-105"
-                  onClick={() => handleFilterChange('all')}
+              {allTags.map(tag => (
+                <button
+                  key={tag}
+                  onClick={() => handleFilterChange(tag)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                    activeFilter === tag 
+                      ? 'bg-black text-white' 
+                      : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                  }`}
                 >
-                  All Posts
-                </Badge>
-                
-                {allTags.map(tag => (
-                  <Badge 
-                    key={tag}
-                    variant={activeFilter === tag ? 'default' : 'outline'}
-                    className="cursor-pointer transition-all duration-200 hover:scale-105"
-                    onClick={() => handleFilterChange(tag)}
-                  >
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
+                  {tag}
+                </button>
+              ))}
             </div>
           </motion.div>
         )}
         
         {/* Photo Gallery */}
         <div>
-          <motion.h2 
-            className="text-2xl font-semibold mb-6"
+          <motion.div
+            className="mb-8 text-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            Photo Gallery
+            <h2 className="text-3xl font-light tracking-tight mb-2">
+              {activeFilter === 'all' ? 'Nature Gallery' : activeFilter}
+            </h2>
             {activeFilter !== 'all' && (
-              <motion.span
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
-              > - {activeFilter}</motion.span>
+                className="text-gray-500 text-sm"
+              >
+                Filtered collection • {filteredPosts.filter(post => post.image).length} photos
+              </motion.div>
             )}
-          </motion.h2>
+          </motion.div>
           
           {isLoading ? (
             <GallerySkeleton />
@@ -371,35 +377,40 @@ const Blog = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.5 }}
-                className="grid gap-4 auto-rows-fr"
-                style={{ 
-                  gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))"
-                }}
+                className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4"
               >
-                {filteredPosts.filter(post => post.image).map((post) => (
-                  <motion.a
-                    key={post.id}
-                    href={post.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 relative aspect-square group bg-white"
-                    whileHover={{ scale: 1.03, y: -5 }}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <img 
-                      src={post.image} 
-                      alt={post.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                    <div className="absolute bottom-0 left-0 right-0 bg-white/60 backdrop-blur-sm px-4 py-3">
-                      <h3 className="text-gray-800 font-semibold text-base line-clamp-2 w-full tracking-wide leading-tight font-serif italic">
-                        {post.title}
-                      </h3>
-                    </div>
-                  </motion.a>
-                ))}
+                {filteredPosts.filter(post => post.image).map((post, index) => {
+                  // Create varying heights for more natural masonry layout
+                  const aspectRatio = index % 3 === 0 ? 'aspect-[3/4]' : 
+                                     index % 3 === 1 ? 'aspect-square' : 'aspect-[4/3]';
+                  
+                  return (
+                    <motion.a
+                      key={post.id}
+                      href={post.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`block overflow-hidden rounded-md mb-4 shadow-sm hover:shadow-md transition-all duration-300 relative ${aspectRatio} group bg-white`}
+                      whileHover={{ scale: 1.02 }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <img 
+                        src={post.image} 
+                        alt={post.title}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                        <div className="w-full p-3 bg-gradient-to-t from-black/80 via-black/30 to-transparent">
+                          <h3 className="text-white font-normal text-sm w-full line-clamp-2 font-sans">
+                            {post.title}
+                          </h3>
+                        </div>
+                      </div>
+                    </motion.a>
+                  );
+                })}
               </motion.div>
             </AnimatePresence>
           )}
