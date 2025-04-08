@@ -6,16 +6,17 @@ import { useQuery } from "@tanstack/react-query";
 import { SimplifiedBloggerPost } from "@shared/schema";
 import { plantCategories } from "@/components/CategoriesGrid";
 import axios from "axios";
+import styles from '@/styles/PostAnimation.module.css';
 
 const CategoryDetail = () => {
   // Get category ID from URL
   const [_, params] = useRoute("/category/:id");
   const [, navigate] = useLocation();
   const categoryId = params?.id;
-  
+
   // Find the category
   const category = plantCategories.find(cat => cat.id === categoryId);
-  
+
   if (!category) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -40,13 +41,13 @@ const CategoryDetail = () => {
   useEffect(() => {
     if (Array.isArray(blogPosts) && blogPosts.length > 0) {
       const allLabels = new Set<string>();
-      
+
       blogPosts.forEach(post => {
         if (post.labels && post.labels.length > 0) {
           post.labels.forEach(label => allLabels.add(label));
         }
       });
-      
+
       console.log("All available labels:", Array.from(allLabels));
       console.log("Looking for category tag:", category.tag);
     }
@@ -57,37 +58,37 @@ const CategoryDetail = () => {
     ? blogPosts.filter(post => {
         // If post has no labels or image, filter it out
         if (!post.labels || !post.image) return false;
-        
+
         // Log the current post labels for debugging
         console.log(`Checking post "${post.title}" with labels:`, post.labels);
-        
+
         // Try to find a matching label with more flexible matching
         return post.labels.some(label => {
           // Clean and normalize both strings for comparison
           const labelWords = label.toLowerCase().trim().split(/\s+/);
           const categoryTag = category.tag.toLowerCase().trim();
-          
+
           // For debugging
           console.log(`  - Comparing label "${label}" with category tag "${category.tag}"`);
-          
+
           // Check for direct matches
           if (label.toLowerCase() === categoryTag) {
             console.log(`    > Direct match found!`);
             return true;
           }
-          
+
           // Check if the label contains the tag as a substring
           if (label.toLowerCase().includes(categoryTag)) {
             console.log(`    > Substring match found!`);
             return true;
           }
-          
+
           // Check if the tag contains the label as a substring
           if (categoryTag.includes(label.toLowerCase())) {
             console.log(`    > Reverse substring match found!`);
             return true;
           }
-          
+
           // Check for word-level matches
           for (const word of labelWords) {
             if (word.length > 3 && (categoryTag.includes(word) || word.includes(categoryTag))) {
@@ -95,7 +96,7 @@ const CategoryDetail = () => {
               return true;
             }
           }
-          
+
           return false;
         });
       })
@@ -183,7 +184,7 @@ const CategoryDetail = () => {
                   <p className="text-xs text-gray-600 mb-1">Total posts: {Array.isArray(blogPosts) ? blogPosts.length : 0}</p>
                   <p className="text-xs text-gray-600 mb-1">Posts with images: {Array.isArray(blogPosts) ? blogPosts.filter(p => p.image).length : 0}</p>
                   <p className="text-xs text-gray-600 mb-3">Posts with labels: {Array.isArray(blogPosts) ? blogPosts.filter(p => p.labels && p.labels.length > 0).length : 0}</p>
-                  
+
                   <h4 className="text-xs font-medium text-gray-700 mb-1">All available labels:</h4>
                   <div className="max-h-32 overflow-y-auto text-xs bg-gray-50 p-2 rounded">
                     {Array.isArray(blogPosts) && blogPosts.length > 0 ? (
@@ -191,7 +192,7 @@ const CategoryDetail = () => {
                         // Collect labels using an array instead of a Set
                         const allLabelsArray: string[] = [];
                         const labelSet = new Set<string>();
-                        
+
                         blogPosts.forEach(post => {
                           if (post.labels && post.labels.length > 0) {
                             post.labels.forEach(label => {
@@ -202,7 +203,7 @@ const CategoryDetail = () => {
                             });
                           }
                         });
-                        
+
                         return allLabelsArray.map(label => (
                           <div key={label} className="mb-1">
                             - {label} {category.tag.toLowerCase() === label.toLowerCase() ? '(exact match)' : 
@@ -239,7 +240,7 @@ const CategoryDetail = () => {
                         href={post.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="block overflow-hidden shadow-sm hover:shadow transition-all duration-300 relative bg-white aspect-[4/3]"
+                        className={`block overflow-hidden shadow-sm hover:shadow transition-all duration-300 relative bg-white aspect-[4/3] ${styles.postAnimation}`}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.3 }}
