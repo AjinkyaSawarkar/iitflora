@@ -51,10 +51,10 @@ const Categories = () => {
             transition={{ duration: 0.6 }}
           >
             <h1 className="text-3xl font-light mb-2">
-              X3 Demo Website
+              IIT Tirupati 
             </h1>
             <p className="text-sm text-gray-500">
-              Welcome to the X3 photo gallery demo website.
+              Welcome to the photo gallery of the trees and plants at IIT Tirupati.
             </p>
           </motion.div>
         </div>
