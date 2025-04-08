@@ -52,22 +52,51 @@ const CategoryDetail = () => {
     }
   }, [blogPosts, category]);
 
-  // Filter posts based on category tag (make it more flexible)
+  // Filter posts based on category tag with a more robust matching strategy
   const categoryPosts = Array.isArray(blogPosts) 
     ? blogPosts.filter(post => {
         // If post has no labels or image, filter it out
         if (!post.labels || !post.image) return false;
         
+        // Log the current post labels for debugging
+        console.log(`Checking post "${post.title}" with labels:`, post.labels);
+        
         // Try to find a matching label with more flexible matching
         return post.labels.some(label => {
-          // Case insensitive matching
-          const labelLower = label.toLowerCase();
-          const categoryTagLower = category.tag.toLowerCase();
+          // Clean and normalize both strings for comparison
+          const labelWords = label.toLowerCase().trim().split(/\s+/);
+          const categoryTag = category.tag.toLowerCase().trim();
           
-          // Check for exact match, includes match, or words match
-          return labelLower === categoryTagLower || 
-                 labelLower.includes(categoryTagLower) || 
-                 categoryTagLower.includes(labelLower);
+          // For debugging
+          console.log(`  - Comparing label "${label}" with category tag "${category.tag}"`);
+          
+          // Check for direct matches
+          if (label.toLowerCase() === categoryTag) {
+            console.log(`    > Direct match found!`);
+            return true;
+          }
+          
+          // Check if the label contains the tag as a substring
+          if (label.toLowerCase().includes(categoryTag)) {
+            console.log(`    > Substring match found!`);
+            return true;
+          }
+          
+          // Check if the tag contains the label as a substring
+          if (categoryTag.includes(label.toLowerCase())) {
+            console.log(`    > Reverse substring match found!`);
+            return true;
+          }
+          
+          // Check for word-level matches
+          for (const word of labelWords) {
+            if (word.length > 3 && (categoryTag.includes(word) || word.includes(categoryTag))) {
+              console.log(`    > Word match found: "${word}"`);
+              return true;
+            }
+          }
+          
+          return false;
         });
       })
     : [];
