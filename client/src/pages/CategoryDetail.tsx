@@ -232,10 +232,8 @@ const CategoryDetail = () => {
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.5 }}
                   className="grid grid-cols-1 md:grid-cols-3 gap-6"
-                  const [imageIndices, setImageIndices] = useState<Record<string, number>>({});
-
-                  const handleImageClick = (postId: string, totalImages: number) => {
-                    setImageIndices(prev => ({
+                >
+                  {categoryPosts.filter(post => post.image).map((post, index) => (
                       ...prev,
                       [postId]: (prev[postId] || 0) + 1 >= totalImages ? 0 : (prev[postId] || 0) + 1
                     }));
