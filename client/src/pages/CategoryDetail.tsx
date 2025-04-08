@@ -291,18 +291,12 @@ const CategoryDetail = () => {
                   {categoryPosts
                     .filter((post) => post.image)
                     .map((post, index) => {
-                      const [currentImageIndex, setCurrentImageIndex] =
-                        useState(0);
-                      const images = [
-                        post.image,
-                        ...(post.images || []),
-                      ].filter(Boolean);
+                      const images = [post.image, ...(post.images || [])].filter(Boolean);
+                      const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-                      const handleImageClick = (e: React.MouseEvent) => {
+                      const handleClick = (e: React.MouseEvent) => {
                         e.preventDefault();
-                        setCurrentImageIndex(
-                          (prevIndex) => (prevIndex + 1) % images.length,
-                        );
+                        setCurrentImageIndex((prev) => (prev + 1) % images.length);
                       };
 
                       return (
@@ -312,13 +306,18 @@ const CategoryDetail = () => {
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ duration: 0.3 }}
-                          onClick={handleImageClick}
+                          onClick={handleClick}
                         >
                           <img
                             src={images[currentImageIndex]}
                             alt={post.title}
                             className="w-full h-full object-cover cursor-pointer"
                           />
+                          {images.length > 1 && (
+                            <div className="absolute top-2 right-2 bg-black/50 text-white px-2 py-1 rounded text-xs">
+                              {currentImageIndex + 1}/{images.length}
+                            </div>
+                          )}
                           <a
                             href={post.url}
                             target="_blank"
