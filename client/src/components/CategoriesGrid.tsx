@@ -95,9 +95,6 @@ const CategoriesGrid = () => {
             <h3 className="text-xl font-medium mb-3 text-center">
               {category.title}
             </h3>
-            <div className="text-xs text-gray-500 mb-3 text-center">
-              A few images displaying in a justified grid.
-            </div>
             <div className="overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 bg-white w-full">
               <img
                 src={category.image}
