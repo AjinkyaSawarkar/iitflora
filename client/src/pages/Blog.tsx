@@ -24,7 +24,7 @@ const processBloggerPosts = (posts: BloggerPost[]): SimplifiedBloggerPost[] => {
     const firstImageUrl = post.images && post.images.length > 0 
       ? post.images[0].url 
       : extractFirstImageUrl(post.content);
-    
+
     return {
       id: post.id,
       title: post.title,
@@ -43,22 +43,22 @@ const processBloggerPosts = (posts: BloggerPost[]): SimplifiedBloggerPost[] => {
 const BlogMarquee = ({ posts }: { posts: SimplifiedBloggerPost[] }) => {
   const postsWithImages = posts.filter(post => post.image);
   const scrollRef = useRef<HTMLDivElement>(null);
-  
+
   // Auto-scroll the marquee
   useEffect(() => {
     if (postsWithImages.length <= 3) return;
-    
+
     const scrollContainer = scrollRef.current;
     if (!scrollContainer) return;
-    
+
     let animationId: number;
     let scrollAmount = 1;
     const speed = 0.5; // Adjust speed as needed
-    
+
     const scroll = () => {
       if (scrollContainer) {
         scrollContainer.scrollLeft += scrollAmount * speed;
-        
+
         // Reset scroll position when reaching the end
         if (scrollContainer.scrollLeft >= (scrollContainer.scrollWidth - scrollContainer.clientWidth - 100)) {
           // Jump back to start with a small offset to avoid jumpy appearance
@@ -67,22 +67,22 @@ const BlogMarquee = ({ posts }: { posts: SimplifiedBloggerPost[] }) => {
       }
       animationId = requestAnimationFrame(scroll);
     };
-    
+
     // Start the animation
     animationId = requestAnimationFrame(scroll);
-    
+
     // Add pause on hover functionality
     const handleMouseEnter = () => {
       cancelAnimationFrame(animationId);
     };
-    
+
     const handleMouseLeave = () => {
       animationId = requestAnimationFrame(scroll);
     };
-    
+
     scrollContainer.addEventListener('mouseenter', handleMouseEnter);
     scrollContainer.addEventListener('mouseleave', handleMouseLeave);
-    
+
     return () => {
       cancelAnimationFrame(animationId);
       if (scrollContainer) {
@@ -91,16 +91,16 @@ const BlogMarquee = ({ posts }: { posts: SimplifiedBloggerPost[] }) => {
       }
     };
   }, [postsWithImages.length]);
-  
+
   if (postsWithImages.length === 0) return null;
-  
+
   return (
     <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-50 to-emerald-100 p-6 pb-8">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold bg-gradient-to-r from-emerald-700 to-emerald-500 bg-clip-text text-transparent">
           Featured Posts
         </h2>
-        
+
         <div className="flex items-center space-x-2 text-sm text-emerald-600">
           <div className="text-emerald-600 opacity-70">Hover to pause</div>
           <div className="flex space-x-1">
@@ -110,7 +110,7 @@ const BlogMarquee = ({ posts }: { posts: SimplifiedBloggerPost[] }) => {
           </div>
         </div>
       </div>
-      
+
       {/* Horizontal scrolling container */}
       <div 
         ref={scrollRef}
@@ -139,7 +139,7 @@ const BlogMarquee = ({ posts }: { posts: SimplifiedBloggerPost[] }) => {
               className="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
               style={{ backgroundImage: `url(${post.image})` }}
             />
-            
+
             {/* Modern glass effect overlay with post title */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end">
               <div className="p-5">
@@ -149,13 +149,13 @@ const BlogMarquee = ({ posts }: { posts: SimplifiedBloggerPost[] }) => {
                     {post.labels[0]}
                   </div>
                 )}
-                
+
                 {/* Title with modern style */}
                 <div className="backdrop-blur-sm bg-white/10 rounded-lg p-4 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
                   <h2 className="font-display text-white text-xl font-bold line-clamp-2 mb-2">
                     {post.title}
                   </h2>
-                  
+
                   {/* Tags with modern style, only visible on hover */}
                   {post.labels && post.labels.length > 0 && (
                     <div className="flex flex-wrap gap-1 mt-2 h-0 opacity-0 group-hover:h-auto group-hover:opacity-100 transition-all duration-500 overflow-hidden">
@@ -166,7 +166,7 @@ const BlogMarquee = ({ posts }: { posts: SimplifiedBloggerPost[] }) => {
                       ))}
                     </div>
                   )}
-                  
+
                   {/* View button, visible on hover */}
                   <div className="mt-3 h-0 opacity-0 group-hover:h-auto group-hover:opacity-100 transition-all duration-300 overflow-hidden">
                     <div className="text-emerald-300 text-sm flex items-center">
@@ -182,11 +182,11 @@ const BlogMarquee = ({ posts }: { posts: SimplifiedBloggerPost[] }) => {
           </motion.a>
         ))}
       </div>
-      
+
       {/* Modern gradient edges for scrolling indicators */}
       <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-emerald-50 to-transparent z-10"></div>
       <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-emerald-50 to-transparent z-10"></div>
-      
+
       {/* Subtle scroll indicator arrows */}
       <div 
         className="hidden md:flex absolute left-2 top-1/2 transform -translate-y-1/2 text-emerald-600/50 hover:text-emerald-600 bg-white/70 backdrop-blur-sm rounded-full p-1 cursor-pointer z-20 transition-all duration-300 hover:bg-white/90"
@@ -221,7 +221,7 @@ const Blog = () => {
   const [activeFilter, setActiveFilter] = useState<string>('all');
   const [allTags, setAllTags] = useState<string[]>([]);
   const tagsExtracted = useRef(false);
-  
+
   // Fetch blog posts with React Query
   const { 
     data, 
@@ -231,20 +231,20 @@ const Blog = () => {
     queryKey: [`/blogger/${FIXED_BLOG_ID}`],
     queryFn: async () => {
       const apiKey = import.meta.env.VITE_BLOGGER_API_KEY;
-      
+
       if (!apiKey) {
         throw new Error('Blogger API key is missing.');
       }
-      
+
       const apiUrl = `https://www.googleapis.com/blogger/v3/blogs/${FIXED_BLOG_ID}/posts?key=${apiKey}&maxResults=${MAX_RESULTS}`;
       const response = await axios.get(apiUrl);
       return response.data;
     },
   });
-  
+
   // Process the blog posts
   const blogPosts = data?.items ? processBloggerPosts(data.items) : [];
-  
+
   // Extract all unique tags only once when posts are loaded
   useEffect(() => {
     if (blogPosts.length > 0 && !tagsExtracted.current) {
@@ -252,22 +252,22 @@ const Blog = () => {
         .flatMap(post => post.labels || [])
         .filter((value, index, self) => self.indexOf(value) === index)
         .sort();
-      
+
       setAllTags(tags);
       tagsExtracted.current = true;
     }
   }, [blogPosts]);
-  
+
   // Filter posts based on selected tag
   const filteredPosts = activeFilter === 'all' 
     ? blogPosts
     : blogPosts.filter(post => post.labels?.includes(activeFilter));
-  
+
   // Memoize the filter change handler
   const handleFilterChange = useCallback((filter: string) => {
     setActiveFilter(filter);
   }, []);
-  
+
   // Loading skeleton for the gallery with masonry layout
   const GallerySkeleton = () => (
     <div 
@@ -283,7 +283,7 @@ const Blog = () => {
       })}
     </div>
   );
-  
+
   return (
     <div className="min-h-screen bg-white pb-16">
       {/* Main Content */}
@@ -306,7 +306,7 @@ const Blog = () => {
             <BlogMarquee posts={blogPosts} />
           </motion.div>
         )}
-        
+
         {/* Filter Bar */}
         {blogPosts.length > 0 && (
           <motion.div 
@@ -326,7 +326,7 @@ const Blog = () => {
               >
                 All
               </button>
-              
+
               {allTags.map(tag => (
                 <button
                   key={tag}
@@ -343,7 +343,7 @@ const Blog = () => {
             </div>
           </motion.div>
         )}
-        
+
         {/* Photo Gallery */}
         <div>
           <motion.div
@@ -366,7 +366,7 @@ const Blog = () => {
               </motion.div>
             )}
           </motion.div>
-          
+
           {isLoading ? (
             <GallerySkeleton />
           ) : (
@@ -383,7 +383,7 @@ const Blog = () => {
                   // Create varying heights for more natural masonry layout
                   const aspectRatio = index % 3 === 0 ? 'aspect-[3/4]' : 
                                      index % 3 === 1 ? 'aspect-square' : 'aspect-[4/3]';
-                  
+
                   return (
                     <motion.a
                       key={post.id}
@@ -414,7 +414,7 @@ const Blog = () => {
               </motion.div>
             </AnimatePresence>
           )}
-          
+
           {!isLoading && filteredPosts.length === 0 && (
             <motion.div 
               className="text-center py-10"
