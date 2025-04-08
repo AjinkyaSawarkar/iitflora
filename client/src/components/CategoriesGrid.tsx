@@ -72,21 +72,8 @@ const CategoriesGrid = () => {
   const [, navigate] = useLocation();
 
   return (
-    <div className="max-w-[1800px] mx-auto px-4 py-12 bg-gray-50">
-      <motion.div
-        className="text-center mb-12"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <h1 className="text-4xl font-light tracking-tight mb-3">Plant Categories</h1>
-        <p className="text-gray-600 max-w-2xl mx-auto">
-          Explore our diverse collection of campus trees and plants organized by categories.
-          Click on any category to view the detailed collection.
-        </p>
-      </motion.div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {plantCategories.map((category, index) => (
           <motion.div
             key={category.id}

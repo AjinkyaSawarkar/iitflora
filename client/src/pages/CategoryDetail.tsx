@@ -37,12 +37,14 @@ const CategoryDetail = () => {
   });
 
   // Filter posts based on category tag
-  const categoryPosts = blogPosts.filter(post => {
-    // Check if the post has tags/labels that match our category tag
-    return post.labels?.some(label => 
-      label.toLowerCase().includes(category.tag.toLowerCase())
-    );
-  });
+  const categoryPosts = Array.isArray(blogPosts) 
+    ? blogPosts.filter(post => {
+        // Check if the post has tags/labels that match our category tag
+        return post.labels?.some(label => 
+          label.toLowerCase().includes(category.tag.toLowerCase())
+        );
+      })
+    : [];
 
   // Loading skeleton for the gallery with masonry layout
   const GallerySkeleton = () => (
@@ -61,9 +63,9 @@ const CategoryDetail = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-16">
+    <div className="min-h-screen bg-white pb-16">
       {/* Hero Header */}
-      <div className="bg-gray-100 py-16">
+      <div className="bg-gray-50 py-16">
         <div className="max-w-[1800px] mx-auto px-4 sm:px-6">
           <motion.div
             className="text-center"
@@ -71,7 +73,11 @@ const CategoryDetail = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 className="text-4xl font-light tracking-tight mb-3">{category.title}</h1>
+            <h1 className="text-4xl font-light tracking-tight mb-3">
+              <span className="bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">
+                {category.title}
+              </span>
+            </h1>
             <p className="text-gray-600 max-w-2xl mx-auto">
               {category.description}
             </p>
