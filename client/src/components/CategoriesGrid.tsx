@@ -72,31 +72,27 @@ const CategoriesGrid = () => {
   const [, navigate] = useLocation();
 
   return (
-    <div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="py-10">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-5xl mx-auto">
         {plantCategories.map((category, index) => (
           <motion.div
             key={category.id}
-            className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer"
+            className="flex flex-col items-center cursor-pointer"
             onClick={() => navigate(`/category/${category.id}`)}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
-            whileHover={{ 
-              scale: 1.03,
-              transition: { duration: 0.2 }
-            }}
           >
-            <div className="aspect-[4/3] overflow-hidden">
+            <h3 className="text-xl font-medium mb-3 text-center">{category.title}</h3>
+            <div className="text-xs text-gray-500 mb-3 text-center">
+              A few images displaying in a justified grid.
+            </div>
+            <div className="overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 bg-white w-full">
               <img 
                 src={category.image} 
                 alt={category.title} 
-                className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
+                className="w-full h-auto object-cover"
               />
-            </div>
-            <div className="p-5">
-              <h3 className="text-xl font-medium mb-2">{category.title}</h3>
-              <p className="text-gray-600 text-sm">{category.description}</p>
             </div>
           </motion.div>
         ))}

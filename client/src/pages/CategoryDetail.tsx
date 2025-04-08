@@ -63,26 +63,27 @@ const CategoryDetail = () => {
   );
 
   return (
-    <div className="min-h-screen bg-white pb-16">
+    <div className="min-h-screen bg-[#f0f2f1] pb-16">
       {/* Hero Header */}
-      <div className="bg-gray-50 py-16">
-        <div className="max-w-[1800px] mx-auto px-4 sm:px-6">
+      <div className="py-8 border-b border-gray-200">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <motion.div
             className="text-center"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 className="text-4xl font-light tracking-tight mb-3">
-              <span className="bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">
-                {category.title}
-              </span>
+            <h1 className="text-3xl font-light mb-2">
+              {category.title}
             </h1>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+            <p className="text-sm text-gray-500 mb-4">
+              A few images displaying in a justified grid.
+            </p>
+            <p className="text-gray-600 max-w-2xl mx-auto mb-4">
               {category.description}
             </p>
-            <div className="mt-6">
-              <Button variant="outline" onClick={() => navigate("/")} className="hover:scale-105 transition-transform">
+            <div className="mt-4">
+              <Button variant="outline" onClick={() => navigate("/")} className="transition-all">
                 ← Back to Categories
               </Button>
             </div>
@@ -91,7 +92,7 @@ const CategoryDetail = () => {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-[1800px] mx-auto px-4 sm:px-6 py-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
         {isLoading ? (
           <div>
             <p className="text-center text-gray-500 mb-8">Loading plants in this category...</p>
@@ -131,25 +132,20 @@ const CategoryDetail = () => {
             ) : (
               <AnimatePresence mode="wait">
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
                   transition={{ duration: 0.5 }}
-                  className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-6 space-y-6"
+                  className="grid grid-cols-1 md:grid-cols-3 gap-6"
                 >
                   {categoryPosts.filter(post => post.image).map((post, index) => {
-                    // Create varying heights for more natural masonry layout
-                    const aspectRatio = index % 3 === 0 ? 'aspect-[3/4]' : 
-                                      index % 3 === 1 ? 'aspect-square' : 'aspect-[4/3]';
-                    
                     return (
                       <motion.a
                         key={post.id}
                         href={post.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`block overflow-hidden rounded-md mb-6 shadow-sm hover:shadow-md transition-all duration-300 relative ${aspectRatio} group bg-white`}
-                        whileHover={{ scale: 1.02 }}
+                        className="block overflow-hidden shadow-sm hover:shadow transition-all duration-300 relative bg-white"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.3 }}
@@ -157,14 +153,10 @@ const CategoryDetail = () => {
                         <img 
                           src={post.image} 
                           alt={post.title}
-                          className="w-full h-full object-cover"
+                          className="w-full h-auto object-cover"
                         />
-                        <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-                          <div className="w-full p-3 bg-gradient-to-t from-black/80 via-black/30 to-transparent">
-                            <h3 className="text-white font-normal text-sm w-full line-clamp-2 font-sans">
-                              {post.title}
-                            </h3>
-                          </div>
+                        <div className="absolute bottom-0 left-0 bg-white/80 text-xs py-1 px-2 text-gray-500">
+                          {post.title}
                         </div>
                       </motion.a>
                     );
