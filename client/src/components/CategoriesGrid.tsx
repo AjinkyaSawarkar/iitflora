@@ -86,44 +86,15 @@ const CategoriesGrid = () => {
             <h3 className="text-xl font-medium mb-3 text-center">
               {category.title}
             </h3>
-            <div className="grid grid-cols-2 gap-2 mb-3">
-              <div className="aspect-square overflow-hidden rounded-lg">
-                <img
-                  src={category.image}
-                  alt={`${category.title} 1`}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="aspect-square overflow-hidden rounded-lg">
-                <img
-                  src={`/Images/${category.id}.jpg`}
-                  alt={`${category.title} 2`}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.currentTarget.src = category.image;
-                  }}
-                />
-              </div>
-              <div className="aspect-square overflow-hidden rounded-lg">
-                <img
-                  src={`/Images/${category.id}-2.jpg`}
-                  alt={`${category.title} 3`}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.currentTarget.src = category.image;
-                  }}
-                />
-              </div>
-              <div className="aspect-square overflow-hidden rounded-lg">
-                <img
-                  src={`/Images/${category.id}-3.jpg`}
-                  alt={`${category.title} 4`}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.currentTarget.src = category.image;
-                  }}
-                />
-              </div>
+            <div className="text-xs text-gray-500 mb-3 text-center">
+              A few images displaying in a justified grid.
+            </div>
+            <div className="overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 bg-white w-full">
+              <img
+                src={category.image}
+                alt={category.title}
+                className="w-full h-auto object-cover"
+              />
             </div>
           </motion.div>
         ))}
