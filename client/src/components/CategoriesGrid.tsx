@@ -25,7 +25,7 @@ export const plantCategories = [
     description: "Trees with religious significance or medicinal properties",
     image:
       "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhuLTRSa8sm6_WS_03-c7DIrvrrjMbkBP5MQCC9xE_poNTpIuigRC_JOxUpOlAHKax1jIk7QHvNhBWxASpMVu0VrA5Exjqbo1HNh9FSLIs5OzgGQIAlEQahTs0eX2BNpCJfaCNuVzDWgBz2q9r_qzZtE3LrD5otUMHRt8gGm_8jxm5zsGngnTnM0whS4z9t/s600/sacred-tree.jpg",
-    tag: "medicinal", // Simple keyword for matching
+    tag: "sacred", // Simple keyword for matching
   },
   {
     id: "palms-specimen",
@@ -57,7 +57,7 @@ export const plantCategories = [
     description: "Herbs with medicinal properties or pleasant aromas",
     image:
       "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjxE-mMGac73O5cY8Wd7mb4wkO7G3P1y-vjQQVHOmvwM2oQS8nrPcmR2-1R6xxQA9BpphcImqlgtVC-fHYhvIwW0-xZpX5OvvZlO2yiEquFrpicUyHzRyQZ9qNTqpKZclxfoGbsLDODzT-6jMUsKOh_sRglmblj1jEyIUPg8x05nHd5amqzKzpEC5N-KKUt/s1068/medicinal.jpg",
-    tag: "herb", // Simple keyword for matching
+    tag: "aromatic", // Simple keyword for matching
   },
   {
     id: "biodiversity",
@@ -73,7 +73,7 @@ export const plantCategories = [
     description: "Trees that produce fruits for consumption",
     image:
       "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhWnvHxaYAtNxOMy06Ei1Hr_tTXnPCsIPkuThUyqvqxdisw-9d_7nekWSQOOpg2vegTdu374hRM1KMCIz1ZRCmagMdh0daOhiVuZo6adLkYncmq9d08bQtixSlF3ssTQf7Aeg_2rGWq7ylJOOuz4lLjl_z-zWEJmjXP3crHoyQ9ZESzWOqAVHcq-C0SQCBo/s320/fruitbearing.jpg",
-    tag: "fruit", // Simple keyword for matching
+    tag: "bearing", // Simple keyword for matching
   },
 ];
 

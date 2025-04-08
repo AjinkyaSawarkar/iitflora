@@ -27,7 +27,7 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
         <div className="flex items-center mb-4 md:mb-0">
           <img 
-            src="/attached_assets/logo.png"
+            src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgzyooW0LIlwPNIAWYq1nwSa9SwRjeK0c6TGiHU4wMWk6y8x8P6ETo7JUyOjGuRgFTyQKTHoBZm0G_MtO0xLTe1T07jVZwVh14P8E3s-bRE55ZXYKL5_YUXXzuQ6kUYT-KMRSCBZyUfrEg4vfpQCwDt1n2iYbtiSPo26kEJOOhmOxSKeNWuOemVWo2KfcFN/s320/logo.png"
             alt="Nisarga Logo"
             className="w-10 h-10 mr-3"
           />
