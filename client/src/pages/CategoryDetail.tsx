@@ -234,47 +234,25 @@ const CategoryDetail = () => {
                 >
                   {categoryPosts.filter(post => post.image).map((post, index) => {
                     return (
-                      <motion.div
+                      <motion.a
                         key={post.id}
-                        className="relative aspect-[4/3] bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md"
+                        href={post.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block overflow-hidden shadow-sm hover:shadow transition-all duration-300 relative bg-white aspect-[4/3]"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.3 }}
                       >
-                        <div 
-                          className={`w-full h-full cursor-pointer group`}
-                          onClick={(e) => {
-                            const target = e.currentTarget;
-                            target.classList.toggle('flipped');
-                            target.classList.toggle('unflipped');
-                          }}
-                        >
-                          <div className="imageContainer">
-                            <img 
-                              src={post.image}
-                              alt={post.title}
-                              className="imageFront"
-                            />
-                            <img 
-                              src={post.images?.[1] || post.image}
-                              alt={`${post.title} - alternate view`}
-                              className="imageBack"
-                            />
-                          </div>
-                          <div className="absolute bottom-0 left-0 right-0 bg-black/50 backdrop-blur-sm p-2 transition-opacity">
-                            <p className="text-white text-sm">{post.title}</p>
-                          </div>
-                          <a 
-                            href={post.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="absolute top-2 right-2 bg-white/80 hover:bg-white text-gray-800 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            View Post
-                          </a>
+                        <img 
+                          src={post.image} 
+                          alt={post.title}
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute bottom-0 left-0 bg-white/80 text-xs py-1 px-2 text-gray-500">
+                          {post.title}
                         </div>
-                      </motion.div>
+                      </motion.a>
                     );
                   })}
                 </motion.div>
