@@ -291,13 +291,19 @@ const CategoryDetail = () => {
                   {categoryPosts
                     .filter((post) => post.image)
                     .map((post, index) => {
-                      const allImages = [post.image, ...(post.images || [])].filter(Boolean);
-                      const [currentImageIndex, setCurrentImageIndex] = useState(0);
+                      const allImages = [
+                        post.image,
+                        ...(post.images || []),
+                      ].filter(Boolean);
+                      const [currentImageIndex, setCurrentImageIndex] =
+                        useState(0);
 
                       const handleImageClick = (e: React.MouseEvent) => {
                         e.preventDefault();
                         e.stopPropagation();
-                        setCurrentImageIndex((prev) => (prev + 1) % allImages.length);
+                        setCurrentImageIndex(
+                          (prev) => (prev + 1) % allImages.length,
+                        );
                       };
 
                       return (
