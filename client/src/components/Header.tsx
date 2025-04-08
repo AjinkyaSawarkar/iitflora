@@ -26,14 +26,14 @@ const Header = () => {
     <header className="bg-white shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
         <div className="flex items-center mb-4 md:mb-0">
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
             className="w-8 h-8 text-primary mr-3"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h14a2 2 0 012 2v12a4 4 0 01-4 4H7zm10-2a2 2 0 002-2v-5.5l-5-3-5 3V17a2 2 0 002 2h6z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 18V7c0-1 1-2 2-2h6c1 0 2 1 2 2v11m-5-7h0M12 8v10m-5 0h10a2 2 0 002-2V6a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z" />
           </svg>
           <Link href="/">
             <h1 className="font-display text-2xl md:text-3xl font-bold text-neutral-800 cursor-pointer">
