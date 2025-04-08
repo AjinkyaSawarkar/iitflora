@@ -234,59 +234,26 @@ const CategoryDetail = () => {
                   className="grid grid-cols-1 md:grid-cols-3 gap-6"
                 >
                   {categoryPosts.filter(post => post.image).map((post, index) => {
-                    const n = 14;
-                    const cells = Array.from({ length: n * n });
-                    const postImages = [post.image, ...(post.images || [])].filter(Boolean);
-                    const [currentImageIndex, setCurrentImageIndex] = useState(0);
-                    const [isFlipped, setIsFlipped] = useState(false);
-
-                    const handleClick = () => {
-                      setIsFlipped(!isFlipped);
-                      setTimeout(() => {
-                        setCurrentImageIndex((prev) => (prev + 1) % postImages.length);
-                      }, 300);
-                    };
-
                     return (
-                      <div key={post.id} className="relative">
-                        <input 
-                          type="checkbox" 
-                          id={`image-${post.id}`} 
-                          checked={isFlipped}
-                          readOnly
-                          className="hidden" 
+                      <motion.a
+                        key={post.id}
+                        href={post.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`block overflow-hidden shadow-sm hover:shadow transition-all duration-300 relative bg-white aspect-[4/3] ${styles.postAnimation}`}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <img 
+                          src={post.image} 
+                          alt={post.title}
+                          className="w-full h-full object-cover"
                         />
-                        <div 
-                          onClick={handleClick}
-                          className={`cursor-pointer ${styles.grid}`}
-                          style={{ 
-                            '--n': n,
-                            '--img1': `url(${postImages[currentImageIndex]})`,
-                            '--img2': `url(${postImages[(currentImageIndex + 1) % postImages.length]})`
-                          } as React.CSSProperties}
-                        >
-                          {cells.map((_, idx) => {
-                            const i = idx % n;
-                            const j = Math.floor(idx / n);
-                            return (
-                              <div
-                                key={idx}
-                                className={`${styles.cell} ${isFlipped ? styles.flipped : ''}`}
-                                style={{ '--i': i, '--j': j } as React.CSSProperties}
-                              />
-                            );
-                          })}
-                        </div>
-                        <a 
-                          href={post.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="absolute bottom-0 left-0 bg-white/80 text-xs py-1 px-2 text-gray-500 hover:bg-white z-10"
-                          onClick={(e) => e.stopPropagation()}
-                        >
+                        <div className="absolute bottom-0 left-0 bg-white/80 text-xs py-1 px-2 text-gray-500">
                           {post.title}
-                        </a>
-                      </div>
+                        </div>
+                      </motion.a>
                     );
                   })}
                 </motion.div>
