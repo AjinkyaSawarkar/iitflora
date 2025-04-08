@@ -291,12 +291,13 @@ const CategoryDetail = () => {
                   {categoryPosts
                     .filter((post) => post.image)
                     .map((post, index) => {
-                      const images = [post.image, ...(post.images || [])].filter(Boolean);
+                      const allImages = [post.image, ...(post.images || [])].filter(Boolean);
                       const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-                      const handleClick = (e: React.MouseEvent) => {
+                      const handleImageClick = (e: React.MouseEvent) => {
                         e.preventDefault();
-                        setCurrentImageIndex((prev) => (prev + 1) % images.length);
+                        e.stopPropagation();
+                        setCurrentImageIndex((prev) => (prev + 1) % allImages.length);
                       };
 
                       return (
@@ -306,16 +307,16 @@ const CategoryDetail = () => {
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ duration: 0.3 }}
-                          onClick={handleClick}
+                          onClick={handleImageClick}
                         >
                           <img
-                            src={images[currentImageIndex]}
+                            src={allImages[currentImageIndex]}
                             alt={post.title}
                             className="w-full h-full object-cover cursor-pointer"
                           />
-                          {images.length > 1 && (
-                            <div className="absolute top-2 right-2 bg-black/50 text-white px-2 py-1 rounded text-xs">
-                              {currentImageIndex + 1}/{images.length}
+                          {allImages.length > 1 && (
+                            <div className="absolute top-2 right-2 bg-black/50 text-white px-2 py-1 rounded-full text-xs">
+                              {currentImageIndex + 1}/{allImages.length}
                             </div>
                           )}
                           <a
