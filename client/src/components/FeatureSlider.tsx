@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { Link } from "wouter";
 import { SimplifiedBloggerPost } from "@shared/schema";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -97,14 +98,12 @@ const FeatureSlider = ({ posts }: FeatureSliderProps) => {
             <p className="text-white/80 text-sm md:text-base max-w-2xl line-clamp-2 mb-4">
               {postsWithImages[current].content.replace(/<[^>]*>?/gm, '').substring(0, 120)}...
             </p>
-            <a 
-              href={postsWithImages[current].url} 
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link 
+              href={`/post/${postsWithImages[current].id}`}
               className="inline-block bg-white text-gray-900 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors duration-300 text-sm md:text-base w-fit"
             >
               View Details
-            </a>
+            </Link>
           </div>
         </motion.div>
       </AnimatePresence>
