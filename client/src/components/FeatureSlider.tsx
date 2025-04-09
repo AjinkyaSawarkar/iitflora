@@ -98,12 +98,14 @@ const FeatureSlider = ({ posts }: FeatureSliderProps) => {
             <p className="text-white/80 text-sm md:text-base max-w-2xl line-clamp-2 mb-4">
               {postsWithImages[current].content.replace(/<[^>]*>?/gm, '').substring(0, 120)}...
             </p>
-            <Link 
-              href={`/post/${postsWithImages[current].id}`}
+            <a 
+              href={postsWithImages[current].url}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-block bg-white text-gray-900 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors duration-300 text-sm md:text-base w-fit"
             >
               View Details
-            </Link>
+            </a>
           </div>
         </motion.div>
       </AnimatePresence>
